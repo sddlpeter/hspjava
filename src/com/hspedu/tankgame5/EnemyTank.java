@@ -5,11 +5,183 @@ import java.util.Vector;
 
 public class EnemyTank extends Tank implements Runnable {
     Vector<Shot> shots = new Vector<>();
-    Random random = new Random();
+    Vector<EnemyTank> enemyTanks = new Vector<>();
     boolean isLive = true;
     public EnemyTank(int x, int y) {
         super(x, y);
         this.setType(1);
+    }
+
+    public void setEnemyTanks(Vector<EnemyTank> enemyTanks) {
+        this.enemyTanks = enemyTanks;
+    }
+
+
+    public boolean isTouchEnemyTank() {
+        switch (this.getDirection()) {
+            case 0: // 我方坦克向上移动
+                for (int i = 0; i < enemyTanks.size(); i++) {
+                    EnemyTank enemyTank = enemyTanks.get(i);
+                    if (this == enemyTank) continue;
+
+                    // 敌方坦克向上或向下移动
+                    if (enemyTank.getDirection() == 0 || enemyTank.getDirection() == 2) {
+                        // 我方左上角跟敌方碰撞
+                        if (this.getX() >= enemyTank.getX()
+                                && this.getX() <= enemyTank.getX() + 40
+                                && this.getY() >= enemyTank.getY()
+                                && this.getY() <= enemyTank.getY() + 60) {
+                            return true;
+                        }
+
+                        // 我方右上角跟敌方碰撞
+                        if (this.getX() + 40 >= enemyTank.getX()
+                                && this.getX() + 40 <= enemyTank.getX() + 40
+                                && this.getY() >= enemyTank.getY()
+                                && this.getY() <= enemyTank.getY() + 60) {
+                            return true;
+                        }
+                    }
+                    // 敌方坦克向左或向右移动
+                    if (enemyTank.getDirection() == 1 || enemyTank.getDirection() == 3) {
+                        // 我方左上角跟敌方碰撞
+                        if (this.getX() >= enemyTank.getX()
+                                && this.getX() <= enemyTank.getX() + 60
+                                && this.getY() >= enemyTank.getY()
+                                && this.getY() <= enemyTank.getY() + 40) {
+                            return true;
+                        }
+
+                        // 我方右上角跟敌方碰撞
+                        if (this.getX() + 40 >= enemyTank.getX()
+                                && this.getX() + 40 <= enemyTank.getX() + 60
+                                && this.getY() >= enemyTank.getY()
+                                && this.getY() <= enemyTank.getY() + 40) {
+                            return true;
+                        }
+                    }
+
+                }
+                break;
+            case 1:
+                for (int i = 0; i < enemyTanks.size(); i++) {
+                    EnemyTank enemyTank = enemyTanks.get(i);
+                    if (this == enemyTank) continue;
+
+                    // 敌方坦克向上或向下移动
+                    if (enemyTank.getDirection() == 0 || enemyTank.getDirection() == 2) {
+                        if (this.getX() + 60 >= enemyTank.getX()
+                                && this.getX() + 60 <= enemyTank.getX() + 40
+                                && this.getY() >= enemyTank.getY()
+                                && this.getY() <= enemyTank.getY() + 60) {
+                            return true;
+                        }
+
+                        if (this.getX() + 60 >= enemyTank.getX()
+                                && this.getX() + 60 <= enemyTank.getX() + 40
+                                && this.getY() + 40 >= enemyTank.getY()
+                                && this.getY() + 40 <= enemyTank.getY() + 60) {
+                            return true;
+                        }
+                    }
+                    // 敌方坦克向左或向右移动
+                    if (enemyTank.getDirection() == 1 || enemyTank.getDirection() == 3) {
+                        if (this.getX() + 60 >= enemyTank.getX()
+                                && this.getX() + 60 <= enemyTank.getX() + 60
+                                && this.getY() >= enemyTank.getY()
+                                && this.getY() <= enemyTank.getY() + 40) {
+                            return true;
+                        }
+
+                        if (this.getX() + 60 >= enemyTank.getX()
+                                && this.getX() + 60 <= enemyTank.getX() + 60
+                                && this.getY() + 40 >= enemyTank.getY()
+                                && this.getY() + 40 <= enemyTank.getY() + 40) {
+                            return true;
+                        }
+                    }
+                }
+                break;
+            case 2:
+                for (int i = 0; i < enemyTanks.size(); i++) {
+                    EnemyTank enemyTank = enemyTanks.get(i);
+                    if (this == enemyTank) continue;
+
+                    // 敌方坦克向上或向下移动
+                    if (enemyTank.getDirection() == 0 || enemyTank.getDirection() == 2) {
+                        if (this.getX() >= enemyTank.getX()
+                                && this.getX() <= enemyTank.getX() + 40
+                                && this.getY() + 60 >= enemyTank.getY()
+                                && this.getY() + 60 <= enemyTank.getY() + 60) {
+                            return true;
+                        }
+
+                        if (this.getX() + 40 >= enemyTank.getX()
+                                && this.getX() + 40 <= enemyTank.getX() + 40
+                                && this.getY() + 60 >= enemyTank.getY()
+                                && this.getY() + 60 <= enemyTank.getY() + 60) {
+                            return true;
+                        }
+                    }
+                    // 敌方坦克向左或向右移动
+                    if (enemyTank.getDirection() == 1 || enemyTank.getDirection() == 3) {
+                        if (this.getX() >= enemyTank.getX()
+                                && this.getX() <= enemyTank.getX() + 60
+                                && this.getY() + 60 >= enemyTank.getY()
+                                && this.getY() + 60 <= enemyTank.getY() + 40) {
+                            return true;
+                        }
+
+                        if (this.getX() + 40 >= enemyTank.getX()
+                                && this.getX() + 40 <= enemyTank.getX() + 60
+                                && this.getY() + 60 >= enemyTank.getY()
+                                && this.getY() + 60 <= enemyTank.getY() + 40) {
+                            return true;
+                        }
+                    }
+                }
+                break;
+            case 3:
+                for (int i = 0; i < enemyTanks.size(); i++) {
+                    EnemyTank enemyTank = enemyTanks.get(i);
+                    if (this == enemyTank) continue;
+
+                    // 敌方坦克向上或向下移动
+                    if (enemyTank.getDirection() == 0 || enemyTank.getDirection() == 2) {
+                        if (this.getX() >= enemyTank.getX()
+                                && this.getX() <= enemyTank.getX() + 40
+                                && this.getY() >= enemyTank.getY()
+                                && this.getY() <= enemyTank.getY() + 60) {
+                            return true;
+                        }
+
+                        if (this.getX() >= enemyTank.getX()
+                                && this.getX() <= enemyTank.getX() + 40
+                                && this.getY() + 40 >= enemyTank.getY()
+                                && this.getY() + 40 <= enemyTank.getY() + 60) {
+                            return true;
+                        }
+                    }
+                    // 敌方坦克向左或向右移动
+                    if (enemyTank.getDirection() == 1 || enemyTank.getDirection() == 3) {
+                        if (this.getX() >= enemyTank.getX()
+                                && this.getX() <= enemyTank.getX() + 60
+                                && this.getY() >= enemyTank.getY()
+                                && this.getY() <= enemyTank.getY() + 40) {
+                            return true;
+                        }
+
+                        if (this.getX() >= enemyTank.getX()
+                                && this.getX() <= enemyTank.getX() + 60
+                                && this.getY() + 40 >= enemyTank.getY()
+                                && this.getY() + 40 <= enemyTank.getY() + 40) {
+                            return true;
+                        }
+                    }
+                }
+                break;
+        }
+        return false;
     }
 
     @Override
@@ -40,33 +212,37 @@ public class EnemyTank extends Tank implements Runnable {
             switch (getDirection()) {
                 case 0:
                     for (int i = 0; i < 30; i++) {
-                        if (getY() > 0) {
+                        if (getY() > 0 && !isTouchEnemyTank()) {
                             moveUp();
                         }
+
                         try {
                             Thread.sleep(50);
                         } catch (InterruptedException e) {
                             throw new RuntimeException(e);
                         }
+
                     }
                     break;
 
                 case 1:
                     for (int i = 0; i < 30; i++) {
-                        if (getX() + 40 < 1000) {
+                        if (getX() + 40 < 1000 && !isTouchEnemyTank()) {
                             moveRight();
                         }
+
 
                         try {
                             Thread.sleep(50);
                         } catch (InterruptedException e) {
                             throw new RuntimeException(e);
                         }
+
                     }
                     break;
                 case 2:
                     for (int i = 0; i < 30; i++) {
-                        if (getY() + 60 < 750) {
+                        if (getY() + 60 < 750 && !isTouchEnemyTank()) {
                             moveDown();
                         }
 
@@ -75,11 +251,12 @@ public class EnemyTank extends Tank implements Runnable {
                         } catch (InterruptedException e) {
                             throw new RuntimeException(e);
                         }
+
                     }
                     break;
                 case 3:
                     for (int i = 0; i < 30; i++) {
-                        if (getX() > 0){
+                        if (getX() > 0 && !isTouchEnemyTank()){
                             moveLeft();
                         }
 
@@ -88,6 +265,7 @@ public class EnemyTank extends Tank implements Runnable {
                         } catch (InterruptedException e) {
                             throw new RuntimeException(e);
                         }
+
                     }
                     break;
             }
@@ -97,29 +275,6 @@ public class EnemyTank extends Tank implements Runnable {
             if (!isLive) {
                 break;
             }
-
-
-
-
-//            int direct = random.nextInt(4);
-//            if (direct == 0) {
-//                this.setDirection(0);
-//                this.setY(this.getY() - random.nextInt(30));
-//            } else if (direct == 1) {
-//                this.setDirection(1);
-//                this.setX(this.getX() + random.nextInt(30));
-//            } else if (direct == 2) {
-//                this.setDirection(2);
-//                this.setY(this.getY() + random.nextInt(30));
-//            } else if (direct == 3) {
-//                this.setDirection(3);
-//                this.setX(this.getX() - random.nextInt(30));
-//            }
-//
-//            Shot shot = new Shot(this.getX() + 20, this.getY() + 60, this.getDirection());
-//            this.shots.add(shot);
-//            new Thread(shot).start();
-
         }
     }
 }

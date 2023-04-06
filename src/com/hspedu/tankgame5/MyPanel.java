@@ -14,7 +14,8 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
     // 当子弹击中坦克时，加入一个bomb对象
     Vector<Bomb> bombs = new Vector<>();
 
-    int enemyTankSize = 3;
+    int enemyTankSize = 6;
+    int score = 0;
 
     // 定义三张炸弹图片
     Image image1 = null;
@@ -28,6 +29,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
 
         for (int i = 0; i < enemyTankSize; i++) {
             EnemyTank enemyTank = new EnemyTank((i + 1) * 100, 0);
+            enemyTank.setEnemyTanks(enemyTanks);
             enemyTank.setDirection(2);
             new Thread(enemyTank).start();
             Shot shot = new Shot(enemyTank.getX() + 20, enemyTank.getY() + 60, enemyTank.getDirection());
@@ -172,6 +174,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
             }
     }
 
+
     public void hitTank(Shot s, Tank enemyTank) {
         switch (enemyTank.getDirection()) {
             case 0:
@@ -184,6 +187,8 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
                     Bomb bomb = new Bomb(enemyTank.getX(), enemyTank.getY());
                     bombs.add(bomb);
                     enemyTanks.remove(enemyTank);
+                    score++;
+                    System.out.println("score=" + score);
                 }
                 break;
             case 1:
@@ -195,6 +200,8 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
                     Bomb bomb = new Bomb(enemyTank.getX(), enemyTank.getY());
                     bombs.add(bomb);
                     enemyTanks.remove(enemyTank);
+                    score++;
+                    System.out.println("score=" + score);
                 }
                 break;
         }
