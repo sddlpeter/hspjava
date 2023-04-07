@@ -38,16 +38,33 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
             enemyTanks.add(enemyTank);
         }
 
+        Recorder.setEnemyTanks(enemyTanks);
+
         // 初始化图片对象
         image1 = Toolkit.getDefaultToolkit().getImage(MyPanel.class.getResource("/b1.png"));
         image2 = Toolkit.getDefaultToolkit().getImage(MyPanel.class.getResource("/b2.png"));
         image3 = Toolkit.getDefaultToolkit().getImage(MyPanel.class.getResource("/b3.png"));
     }
 
+    public void showInfo(Graphics g) {
+        g.setColor(Color.BLACK);
+        Font font = new Font("Microsoft Yahei", Font.BOLD, 25);
+        g.setFont(font);
+
+
+        g.drawString("玩家累计击毁敌方坦克", 1020, 30);
+        drawTank(1020, 60, g, 0, 1);
+        g.setColor(Color.BLACK);
+        g.drawString(Recorder.getAllEnemyTankNum() + "", 1080, 100);
+
+    }
+
     @Override
     public void paint(Graphics g) {
         super.paint(g);
+
         g.fillRect(0, 0, 1000, 750);
+        showInfo(g);
         if (hero != null && hero.isLive) {
             drawTank(hero.getX(), hero.getY(), g, hero.getDirection(), 0);
         }
@@ -187,8 +204,9 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
                     Bomb bomb = new Bomb(enemyTank.getX(), enemyTank.getY());
                     bombs.add(bomb);
                     enemyTanks.remove(enemyTank);
-                    score++;
-                    System.out.println("score=" + score);
+                    if (enemyTank instanceof EnemyTank) {
+                        Recorder.addAllEnemyTankNum();
+                    }
                 }
                 break;
             case 1:
@@ -200,8 +218,10 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
                     Bomb bomb = new Bomb(enemyTank.getX(), enemyTank.getY());
                     bombs.add(bomb);
                     enemyTanks.remove(enemyTank);
-                    score++;
-                    System.out.println("score=" + score);
+                    if (enemyTank instanceof EnemyTank) {
+                        Recorder.addAllEnemyTankNum();
+                    }
+
                 }
                 break;
         }

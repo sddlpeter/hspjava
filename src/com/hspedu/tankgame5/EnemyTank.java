@@ -1,9 +1,10 @@
 package com.hspedu.tankgame5;
 
+import java.io.Serializable;
 import java.util.Random;
 import java.util.Vector;
 
-public class EnemyTank extends Tank implements Runnable {
+public class EnemyTank extends Tank implements Runnable, Serializable {
     Vector<Shot> shots = new Vector<>();
     Vector<EnemyTank> enemyTanks = new Vector<>();
     boolean isLive = true;
