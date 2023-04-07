@@ -1,8 +1,6 @@
 package com.hspedu.tankgame5;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Vector;
 
 public class Recorder {
@@ -10,7 +8,24 @@ public class Recorder {
     private static FileWriter fw = null;
     private static Vector<EnemyTank> enemyTanks = null;
 
-    private static String recordFile = "c:\\javaio\\myRecord.txt";
+    private static String recordFile = "src\\myRecord.txt";
+
+    private static Vector<Node> nodes = new Vector<>();
+
+    public static Vector<Node> getNodesAndEnemyTankRec() throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(recordFile));
+        allEnemyTankNum = Integer.parseInt(bufferedReader.readLine());
+        String line;
+        while ((line = bufferedReader.readLine()) != null) {
+            String[] xyd = line.split("\\s");
+            Node node = new Node(Integer.parseInt(xyd[0]), Integer.parseInt(xyd[1]), Integer.parseInt(xyd[2]));
+            nodes.add(node);
+        }
+        bufferedReader.close();
+
+        return nodes;
+    }
+
 
     public static void keepRecord() throws IOException {
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(recordFile));

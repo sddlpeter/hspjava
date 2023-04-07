@@ -4,12 +4,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Vector;
 
 //为了让panel不停的重绘子弹，需要将MyPanel实现Runnable，当作一个线程使用
 public class MyPanel extends JPanel implements KeyListener, Runnable {
     Hero hero = null;
     Vector<EnemyTank> enemyTanks = new Vector<>();
+    Vector<Node> nodes = new Vector<>();
+    boolean newGame = true;
 
     // 当子弹击中坦克时，加入一个bomb对象
     Vector<Bomb> bombs = new Vector<>();
@@ -24,19 +30,82 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
 
 
 
-    public MyPanel() {
+    public MyPanel(String key) throws IOException {
         hero = new Hero(500, 500);
 
-        for (int i = 0; i < enemyTankSize; i++) {
-            EnemyTank enemyTank = new EnemyTank((i + 1) * 100, 0);
-            enemyTank.setEnemyTanks(enemyTanks);
-            enemyTank.setDirection(2);
-            new Thread(enemyTank).start();
-            Shot shot = new Shot(enemyTank.getX() + 20, enemyTank.getY() + 60, enemyTank.getDirection());
-            enemyTank.shots.add(shot);
-            new Thread(shot).start();
-            enemyTanks.add(enemyTank);
+        switch (key) {
+            case "1":
+                for (int i = 0; i < enemyTankSize; i++) {
+                    EnemyTank enemyTank = new EnemyTank((i + 1) * 100, 0);
+                    enemyTank.setEnemyTanks(enemyTanks);
+                    enemyTank.setDirection(2);
+                    new Thread(enemyTank).start();
+                    Shot shot = new Shot(enemyTank.getX() + 20, enemyTank.getY() + 60, enemyTank.getDirection());
+                    enemyTank.shots.add(shot);
+                    new Thread(shot).start();
+                    enemyTanks.add(enemyTank);
+                }
+                break;
+            case "2":
+//                System.out.println("继续上局游戏");
+//                BufferedReader bufferedReader = new BufferedReader(new FileReader("c:\\javaio\\myRecord.txt"));
+//                String line;
+//                while ((line = bufferedReader.readLine()) != null) {
+//                    String[] val = line.split("\\s");
+//                    if (val.length < 3) continue;
+//                    EnemyTank enemyTank = new EnemyTank(Integer.parseInt(val[0]), Integer.parseInt(val[1]));
+//                    enemyTank.setDirection(Integer.parseInt(val[2]));
+//                    new Thread(enemyTank).start();
+//                    Shot shot = new Shot(enemyTank.getX() + 20, enemyTank.getY() + 60, enemyTank.getDirection());
+//                    enemyTank.shots.add(shot);
+//                    new Thread(shot).start();
+//                    enemyTanks.add(enemyTank);
+//                }
+                nodes = Recorder.getNodesAndEnemyTankRec();
+                for (int i = 0; i < nodes.size(); i++) {
+                    Node node = nodes.get(i);
+                    EnemyTank enemyTank = new EnemyTank(node.x, node.y);
+                    enemyTank.setEnemyTanks(enemyTanks);
+                    enemyTank.setDirection(node.direction);
+                    new Thread(enemyTank).start();
+                    Shot shot = new Shot(enemyTank.getX() + 20, enemyTank.getY() + 60, enemyTank.getDirection());
+                    enemyTank.shots.add(shot);
+                    new Thread(shot).start();
+                    enemyTanks.add(enemyTank);
+                }
+                break;
+            default:
+                System.out.println("您输入的信息有误");
         }
+//        if (newGame) {
+//            for (int i = 0; i < enemyTankSize; i++) {
+//                EnemyTank enemyTank = new EnemyTank((i + 1) * 100, 0);
+//                enemyTank.setEnemyTanks(enemyTanks);
+//                enemyTank.setDirection(2);
+//                new Thread(enemyTank).start();
+//                Shot shot = new Shot(enemyTank.getX() + 20, enemyTank.getY() + 60, enemyTank.getDirection());
+//                enemyTank.shots.add(shot);
+//                new Thread(shot).start();
+//                enemyTanks.add(enemyTank);
+//            }
+//        } else {
+//            System.out.println("继续上局游戏");
+//            BufferedReader bufferedReader = new BufferedReader(new FileReader("c:\\javaio\\myRecord.txt"));
+//            String line;
+//            while ((line = bufferedReader.readLine()) != null) {
+//                String[] val = line.split("\\s");
+//                if (val.length < 3) continue;
+//                EnemyTank enemyTank = new EnemyTank(Integer.parseInt(val[0]), Integer.parseInt(val[1]));
+//                enemyTank.setDirection(Integer.parseInt(val[2]));
+//                new Thread(enemyTank).start();
+//                Shot shot = new Shot(enemyTank.getX() + 20, enemyTank.getY() + 60, enemyTank.getDirection());
+//                enemyTank.shots.add(shot);
+//                new Thread(shot).start();
+//                enemyTanks.add(enemyTank);
+//            }
+//        }
+
+
 
         Recorder.setEnemyTanks(enemyTanks);
 
