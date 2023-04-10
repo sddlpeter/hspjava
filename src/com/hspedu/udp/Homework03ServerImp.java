@@ -1,13 +1,9 @@
 package com.hspedu.udp;
 
 
-import com.hspedu.network.StreamUtils;
 import org.junit.platform.commons.util.StringUtils;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -19,11 +15,34 @@ public class Homework03ServerImp {
 
         InputStream is = socket.getInputStream();
         int len = 0;
-        byte[] bytes = new byte[1024];
-        while ((len = is.read(bytes)) != -1) {
-            String s = new String(bytes, 0, len);
-            System.out.println("get from client: " + s);
+        byte[] data = new byte[1024];
+        String input = "";
+        while ((len = is.read(data)) != -1) {
+            input = input + new String(data, 0, len);
         }
+        System.out.println(input);
+
+        String filePath = "";
+        if ("dog".equals(input)) {
+            filePath = "src/dog.jpg";
+        } else if ("cat".equals(input)) {
+            filePath = "src/cat.jpg";
+        } else if ("panda".equals(input)) {
+            filePath = "src/panda.jpg";
+        } else {
+            filePath = "src/koala.jpg";
+        }
+
+        BufferedInputStream bis = new BufferedInputStream(new FileInputStream(filePath));
+        byte[] image = StreamUtils.streamToByteArray(bis);
+
+        BufferedOutputStream bos = new BufferedOutputStream(socket.getOutputStream());
+        bos.write(image);
+
+        bos.flush();
+
+        socket.shutdownOutput();
+
 
         System.out.println("server exit...");
     }
